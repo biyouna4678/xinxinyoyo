@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>星织 · 桌面系统 (统一网格版)</title>
   
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- iOS 专属 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="星织">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <!-- 主题色 -->
+  <meta name="theme-color" content="#F7F7F7">
+  
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -98,8 +111,10 @@
   <!-- 1. 全屏壁纸层 -->
   <div class="absolute inset-0 z-0 default-grey-wallpaper">
     <template x-if="settings.wallpaper">
-      <img :src="settings.wallpaper" class="w-full h-full object-cover transition-all duration-300" :style="'filter: ' + settings.filterStyle + ';'" alt="Lockscreen Wallpaper" />
-      <div class="absolute inset-0 pointer-events-none transition-opacity duration-300" :style="`background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,${settings.vignetteOpacity}) 100%);`"></div>
+      <div class="absolute inset-0 z-0">
+        <img :src="settings.wallpaper" class="w-full h-full object-cover transition-all duration-300" :style="'filter: ' + settings.filterStyle + ';'" alt="Lockscreen Wallpaper" />
+        <div class="absolute inset-0 pointer-events-none transition-opacity duration-300" :style="`background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,${settings.vignetteOpacity}) 100%);`"></div>
+      </div>
     </template>
     <div class="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none"></div>
   </div>
@@ -3196,5 +3211,32 @@
 
 <script src="js/desktop.js"></script>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker 注册成功:', registration.scope);
+            // 强制检查更新
+            registration.update();
+            
+            registration.onupdatefound = () => {
+              const installingWorker = registration.installing;
+              if (installingWorker) {
+                installingWorker.onstatechange = () => {
+                  if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // 如果有新版本，重新加载页面
+                    window.location.reload();
+                  }
+                };
+              }
+            };
+          })
+          .catch((error) => {
+            console.error('Service Worker 注册失败:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>

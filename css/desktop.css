@@ -217,6 +217,21 @@
       0 4px 15px rgba(0, 0, 0, 0.03) !important;
 }
 
+.theme-light-wallpaper .liquid-glass-icon {
+    background: rgba(255, 255, 255, 0.45) !important;
+    border: 1.5px solid rgba(255, 255, 255, 1) !important;
+    box-shadow: 
+      0 8px 12px rgba(0, 0, 0, 0.08),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.05),
+      inset 0 2px 4px rgba(255, 255, 255, 0.8) !important;
+}
+.theme-light-wallpaper .liquid-glass-icon::before {
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 60%) !important;
+}
+.theme-light-wallpaper .liquid-glass-icon::after {
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, transparent 70%) !important;
+}
+
 .liquid-glass-icon {
   position: relative;
   background: rgba(255, 255, 255, 0.22);
