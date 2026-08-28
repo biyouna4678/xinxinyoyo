@@ -1,0 +1,127 @@
+                <!-- Pink Gameboy 2x4 小组件 -->
+                <template x-if="cell.widgetType === 'pink_gameboy_2x4'">
+                  <div class="w-full h-full flex items-center justify-center p-0 box-border overflow-visible relative pointer-events-auto">
+                    <!-- 掌机主体与挂饰总容器 -->
+                    <div 
+                      class="relative flex items-center"
+                      x-data="{
+                        screenImg: cell.data?.screenImg || 'https://i.ibb.co/Rkp13sgv/IMG-5555.jpg',
+                        init() {
+                          this.$watch('screenImg', val => this.syncData('screenImg', val));
+                        },
+                        syncData(key, value) {
+                          if(!cell.data) cell.data = {};
+                          cell.data[key] = value;
+                        },
+                        uploadImg() {
+                          if (this.isEditing) return;
+                          let input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = 'image/*';
+                          input.onchange = (e) => {
+                            let file = e.target.files[0];
+                            if (file) {
+                              this.screenImg = URL.createObjectURL(file);
+                            }
+                          };
+                          input.click();
+                        }
+                      }"
+                    >
+                      <!-- 1. Gameboy 掌机外壳 -->
+                      <div class="relative w-[180px] h-[280px] bg-gradient-to-b from-[#FFEAF0] via-[#FCE3EB] to-[#F8D2DD] rounded-[24px] p-3 shadow-[0_8px_20px_rgba(235,165,185,0.35),inset_0_2px_4px_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(220,150,170,0.3)] border border-[#F9DDE5] flex flex-col justify-between items-center z-10">
+                        
+                        <!-- 顶部高光 -->
+                        <div class="absolute top-2 left-6 right-6 h-[3px] bg-white/60 rounded-full pointer-events-none"></div>
+
+                        <!-- 2. 屏幕区域 -->
+                        <div 
+                          @click="isEditing ? null : uploadImg()"
+                          title="点击更换屏幕图片"
+                          class="relative w-full h-[126px] bg-[#312F35] rounded-[12px] p-2 flex items-center justify-center cursor-pointer overflow-hidden border-2 border-[#E5C3CC] shadow-[inset_0_2px_6px_rgba(0,0,0,0.4)] group"
+                        >
+                          <div class="w-full h-full rounded-[6px] overflow-hidden bg-black/50 relative">
+                            <img :src="screenImg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" alt="Screen Content" />
+                            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none"></div>
+                          </div>
+                        </div>
+
+                        <!-- 3. 按键控制区 -->
+                        <div class="w-full flex-1 flex flex-col justify-between pt-2 pb-1 px-1 relative">
+                          <div class="w-full flex justify-between items-center px-2">
+                            <!-- 实心粉星 -->
+                            <svg class="w-3.5 h-3.5 fill-[#EE8AA3] drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]" viewBox="0 0 24 24">
+                              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                            <!-- 空心白星 -->
+                            <svg class="w-3.5 h-3.5 stroke-[#EE8AA3] fill-none stroke-[2.5]" viewBox="0 0 24 24">
+                              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                            </svg>
+                          </div>
+
+                          <!-- 十字键 与 A/B 圆按键 -->
+                          <div class="w-full flex justify-between items-center px-1">
+                            <div class="relative w-[48px] h-[48px] flex items-center justify-center drop-shadow-[0_2px_3px_rgba(180,120,140,0.3)]">
+                              <div class="absolute w-[48px] h-[16px] bg-gradient-to-b from-[#E6E4E8] to-[#C8C5CE] rounded-[4px] border border-[#B2AFBA]"></div>
+                              <div class="absolute w-[16px] h-[48px] bg-gradient-to-r from-[#E6E4E8] to-[#C8C5CE] rounded-[4px] border border-[#B2AFBA]"></div>
+                              <div class="relative z-10 w-[10px] h-[10px] rounded-full bg-[#B2AFBA]/30"></div>
+                            </div>
+
+                            <div class="flex gap-2.5 items-center transform -rotate-6">
+                              <div class="w-[22px] h-[22px] rounded-full bg-gradient-to-b from-[#F78CA2] to-[#E26581] border border-[#D1506D] shadow-[0_2px_3px_rgba(200,80,110,0.4),inset_0_1px_2px_rgba(255,255,255,0.6)]"></div>
+                              <div class="w-[22px] h-[22px] rounded-full bg-gradient-to-b from-[#F78CA2] to-[#E26581] border border-[#D1506D] shadow-[0_2px_3px_rgba(200,80,110,0.4),inset_0_1px_2px_rgba(255,255,255,0.6)] -translate-y-1"></div>
+                            </div>
+                          </div>
+
+                          <!-- 4. 底部 Start / Select 按键 -->
+                          <div class="w-full flex justify-center items-center gap-4 pt-1">
+                            <div class="flex flex-col items-center">
+                              <div class="w-[18px] h-[6px] bg-[#D1C3CA] rounded-full border border-[#B5A4AE]"></div>
+                              <span class="font-sweet text-[11px] text-[#A67B88] font-bold mt-0.5 leading-none">start</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                              <div class="w-[18px] h-[6px] bg-[#D1C3CA] rounded-full border border-[#B5A4AE]"></div>
+                              <span class="font-sweet text-[11px] text-[#A67B88] font-bold mt-0.5 leading-none">select</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 5. 右侧挂链 -->
+                      <div class="absolute left-[176px] top-[26px] flex flex-col items-center z-20 pointer-events-none">
+                        <!-- 粉色串珠弧线 -->
+                        <svg class="w-[70px] h-[135px] overflow-visible drop-shadow-[0_2px_4px_rgba(220,130,150,0.25)]" viewBox="0 0 70 135">
+                          <g fill="#F48FB1" stroke="#E57373" stroke-width="0.3">
+                            <circle cx="2" cy="2" r="3.2"/><circle cx="10" cy="5" r="3.2"/><circle cx="19" cy="10" r="3.2"/><circle cx="28" cy="18" r="3.2"/><circle cx="36" cy="28" r="3.2"/><circle cx="43" cy="40" r="3.2"/><circle cx="48" cy="54" r="3.2"/><circle cx="50" cy="69" r="3.2"/><circle cx="49" cy="84" r="3.2"/><circle cx="45" cy="98" r="3.2"/><circle cx="38" cy="111" r="3.2"/><circle cx="29" cy="122" r="3.2"/><circle cx="19" cy="130" r="3.2"/>
+                          </g>
+                          <g fill="#FF80AB" stroke="#E57373" stroke-width="0.3">
+                            <circle cx="2" cy="2" r="2.8"/><circle cx="8" cy="12" r="2.8"/><circle cx="15" cy="24" r="2.8"/><circle cx="22" cy="38" r="2.8"/><circle cx="28" cy="53" r="2.8"/><circle cx="32" cy="68" r="2.8"/><circle cx="33" cy="83" r="2.8"/><circle cx="31" cy="98" r="2.8"/><circle cx="26" cy="112" r="2.8"/><circle cx="18" cy="123" r="2.8"/>
+                          </g>
+                        </svg>
+                        <!-- 6. 白色挂绳与 HAPPY 字母挂件 -->
+                        <div class="flex flex-col items-center -mt-[5px] ml-[-32px]">
+                          <div class="w-[2px] h-[12px] bg-white border-x border-gray-200 drop-shadow-xs"></div>
+                          <div class="relative flex flex-col items-center gap-[3px]">
+                            <div class="absolute inset-y-0 w-[2px] bg-white z-0 border-x border-gray-200"></div>
+                            <div class="relative z-10 w-[18px] h-[18px] rounded-full bg-white border border-[#F4A6BB] shadow-[0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
+                              <span class="font-game text-[10px] text-[#E06D88] font-bold leading-none">H</span>
+                            </div>
+                            <div class="relative z-10 w-[18px] h-[18px] rounded-full bg-white border border-[#F4A6BB] shadow-[0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
+                              <span class="font-game text-[10px] text-[#E06D88] font-bold leading-none">A</span>
+                            </div>
+                            <div class="relative z-10 w-[18px] h-[18px] rounded-full bg-white border border-[#F4A6BB] shadow-[0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
+                              <span class="font-game text-[10px] text-[#E06D88] font-bold leading-none">P</span>
+                            </div>
+                            <div class="relative z-10 w-[18px] h-[18px] rounded-full bg-white border border-[#F4A6BB] shadow-[0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
+                              <span class="font-game text-[10px] text-[#E06D88] font-bold leading-none">P</span>
+                            </div>
+                            <div class="relative z-10 w-[18px] h-[18px] rounded-full bg-white border border-[#F4A6BB] shadow-[0_1px_2px_rgba(0,0,0,0.1)] flex items-center justify-center">
+                              <span class="font-game text-[10px] text-[#E06D88] font-bold leading-none">Y</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </template>

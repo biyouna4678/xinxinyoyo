@@ -1,0 +1,36 @@
+      <!-- ins韩系音乐主页 4x2 小组件镜像 (简略版预览) -->
+      <template x-if="dragState.item.widgetType === 'ins_music_4x2'">
+        <div class="w-full h-full rounded-[28px] striped-bg shadow-xl border border-white/80 p-3 flex flex-col justify-between overflow-hidden">
+          <div class="flex items-center justify-between z-10 pt-0.5 px-1">
+            <div class="flex items-center gap-2.5">
+              <div class="relative">
+                <img :src="dragState.item.data?.avatarImg || 'https://i.ibb.co/PzW40Ygr/IMG-5484.jpg'" class="w-11 h-11 rounded-full object-cover border-2 border-white shadow-sm" />
+                <div class="absolute -top-1.5 -right-1.5 bg-white border border-gray-100 shadow-sm rounded-full w-5 h-4 flex items-center justify-center">
+                  <i class="fa-solid fa-music text-[8px] text-gray-700"></i>
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <h2 class="text-[14px] font-extrabold text-gray-800 leading-none" x-text="dragState.item.data?.nickname || 'Yosali'"></h2>
+                <span class="text-[10px] font-semibold text-gray-500 leading-tight mt-0.5" x-text="dragState.item.data?.username || '@onera2it'"></span>
+                <span class="text-[9.5px] font-bold text-gray-500 leading-tight mt-0.5" x-text="dragState.item.data?.followers || '99k followers · 1 following'"></span>
+              </div>
+            </div>
+            <button class="bg-white/90 border border-gray-300 text-gray-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+              Edit
+            </button>
+          </div>
+          <div class="bg-white/80 backdrop-blur-md rounded-[20px] p-2 flex items-center justify-between border border-white/60 shadow-sm z-10">
+            <div class="flex flex-col items-center flex-shrink-0">
+              <div class="w-[85px] h-[48px] rounded-[10px] overflow-hidden border border-gray-100 shadow-xs">
+                <img :src="dragState.item.data?.playerImg || 'https://i.ibb.co/F4JnrySg/IMG-5485.jpg'" class="w-full h-full object-cover" />
+              </div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between pl-3 pr-1 h-[62px]">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-extrabold text-gray-700 tracking-wide">MV</span>
+              </div>
+              <p class="text-[10px] font-bold text-gray-800 leading-tight line-clamp-2" x-text="dragState.item.data?.mvTitle || '세상에 의미가 없어，너의 목소리가 들릴 헤드폰을 가져갈게'"></p>
+            </div>
+          </div>
+        </div>
+      </template>

@@ -1,0 +1,30 @@
+        <!-- 竖条组件区 -->
+        <div class="space-y-4">
+          <h4 class="text-[13px] font-serif text-gray-400 font-medium px-2">竖条组件区</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <!-- 2x4 Creamy Film Widget -->
+            <div class="flex flex-col items-center w-full gap-2">
+              <div @click="addWidget('creamy_film_2x4', '粉色胶卷')" class="w-[148px] h-[260px] shrink-0 flex flex-col items-center justify-center p-0 box-border cursor-pointer active:scale-95 transition-all hover:opacity-90">
+                <div class="relative w-[148px] h-[260px] flex flex-col items-center justify-between py-2 px-1 pointer-events-none scale-100 origin-center">
+                  <div class="absolute inset-0 bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0 pointer-events-none"></div>
+                  <div class="w-full h-[18px] flex items-center justify-center gap-1 mt-0.5 z-20 px-2">
+                    <span class="font-sweet text-[12px] text-[#E29CA9] font-bold tracking-tight leading-none px-1 max-w-[100px] truncate">Sweet memories</span>
+                    <svg class="w-2.5 h-2.5 fill-[#E29CA9] shrink-0" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                  </div>
+                  <div class="w-[116px] h-[92px] rounded-[3px] overflow-hidden bg-white border border-[#FADCE3] z-20">
+                    <img src="https://i.ibb.co/DZfs4JH/IMG-5540.jpg" class="w-full h-full object-cover block" />
+                  </div>
+                  <div class="w-[116px] h-[92px] rounded-[3px] overflow-hidden bg-white border border-[#FADCE3] z-20 mb-1">
+                    <img src="https://i.ibb.co/ymZ4Q1t8/IMG-5543.jpg" class="w-full h-full object-cover block" />
+                  </div>
+                  <div class="absolute -bottom-1 -right-1 w-9 h-9 z-30 drop-shadow-[0_2px_4px_rgba(255,182,193,0.4)]">
+                    <img src="https://i.ibb.co/FbVP5MHv/685-20260823014234.png" class="w-full h-full object-contain block" />
+                  </div>
+                </div>
+              </div>
+              <span class="text-[11px] font-serif text-gray-500">粉色胶卷</span>
+            </div>
+          </div>
+        </div>

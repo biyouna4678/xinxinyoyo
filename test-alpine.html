@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+    <div x-data="{ total: 3 }">
+        <template x-for="i in total" :key="i">
+            <div x-text="i"></div>
+        </template>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+      <!-- Overlapping Polaroids 2x2 小组件镜像 (简略版预览) -->
+      <template x-if="dragState.item.widgetType === 'overlapping_polaroids_2x2'">
+        <div class="relative w-[148px] h-[148px] flex items-center justify-center pointer-events-none">
+          <!-- 1. 后方：淡粉色拍立得相框 -->
+          <div class="absolute left-0 bottom-1 w-[96px] h-[132px] bg-[#fde2e8] rounded-[6px] border border-[#f9cbd6] shadow-xs p-1.5 flex flex-col justify-between -rotate-6 z-0">
+            <div class="absolute left-1 top-4 text-[#f4abbb] text-[9px] flex flex-col gap-3">
+              <span>☆</span>
+              <span class="text-[7px]">★</span>
+            </div>
+            <div class="w-full h-[90px] rounded-[2px] overflow-hidden bg-[#fde2e8] mt-2">
+              <img :src="dragState.item.data?.backImg || 'https://i.ibb.co/7tQkdZ7k/IMG-5520.jpg'" class="w-full h-full object-cover block" />
+            </div>
+          </div>
+          <!-- 2. 前方：白色拍立得相框 -->
+          <div class="absolute right-0 top-0 w-[114px] h-[138px] bg-[#fcfcfc] rounded-[7px] border border-gray-200/90 shadow-[0_4px_16px_rgba(0,0,0,0.12)] p-1.5 flex flex-col justify-between z-10">
+            <div class="absolute -top-2 left-4 w-5 h-7 z-30 drop-shadow-xs">
+              <svg viewBox="0 0 24 32" fill="none" class="w-full h-full">
+                <path d="M7 10 L7 22 C7 25.5 10 28 13.5 28 C17 28 20 25.5 20 22 L20 6 C20 3.5 18 1.5 15.5 1.5 C13 1.5 11 3.5 11 6 L11 20" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+                <path d="M15.5 1.5 L16.5 4 L19 4.5 L17 6.5 L17.5 9 L15.5 7.8 L13.5 9 L14 6.5 L12 4.5 L14.5 4 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1" />
+              </svg>
+            </div>
+            <div class="w-full h-[94px] rounded-[2px] overflow-hidden bg-[#fcfcfc] mt-1">
+              <img :src="dragState.item.data?.frontImg || 'https://i.ibb.co/zHfZgFxM/IMG-5521.jpg'" class="w-full h-full object-cover block" />
+            </div>
+            <div class="w-full h-[28px] flex items-center justify-start gap-1.5 px-0.5 pt-1">
+              <div class="w-5 h-[20px] flex-shrink-0 flex items-center justify-center">
+                <img :src="dragState.item.data?.catImg || 'https://i.ibb.co/5X58mrNX/683-20260823010050.png'" class="w-full h-full object-contain block" />
+              </div>
+              <div class="flex items-center gap-1.5 translate-y-[2px]">
+                <span class="font-typewriter text-[10px] text-[#7B7B7B] tracking-tight leading-none" x-text="dragState.item.data?.caption || 'soft day'"></span>
+                <div class="text-[#7B7B7B] flex-shrink-0 flex items-center">
+                  <svg class="w-2.5 h-2.5 fill-none stroke-[#7B7B7B]" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>

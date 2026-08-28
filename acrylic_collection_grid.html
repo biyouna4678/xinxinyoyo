@@ -1,0 +1,90 @@
+                <!-- 亚克力收藏架 4x2 小组件 -->
+                <template x-if="cell.widgetType === 'acrylic_collection_4x2'">
+                  <div class="w-full h-full p-2 relative select-none">
+                    <div 
+                      class="w-full h-full rounded-[28px] bg-white shadow-xl border border-gray-200/90 relative flex flex-col justify-between pt-3 pb-2 px-3 overflow-hidden"
+                      x-data="{
+                        title: cell.data?.title || '〔 Cute collection box 〕',
+                        subtitle: cell.data?.subtitle || ': 萌物收藏盒',
+                        subtext: cell.data?.subtext || '你的童話書掉落在這裡',
+                        images: cell.data?.images || [
+                          'https://i.ibb.co/21LkqT2D/IMG-5478.jpg',
+                          'https://i.ibb.co/fzZHQy4q/IMG-5465.jpg',
+                          'https://i.ibb.co/0PpJhqL/IMG-5466.jpg'
+                        ],
+                        init() {
+                          this.$watch('title', val => this.syncData('title', val));
+                          this.$watch('subtitle', val => this.syncData('subtitle', val));
+                          this.$watch('subtext', val => this.syncData('subtext', val));
+                          this.$watch('images', val => this.syncData('images', val));
+                        },
+                        syncData(key, value) {
+                          if(!cell.data) cell.data = {};
+                          cell.data[key] = value;
+                        },
+                        uploadImage(index) {
+                          if (this.isEditing) return;
+                          let input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = 'image/*';
+                          input.onchange = (e) => {
+                            let file = e.target.files[0];
+                            if (file) {
+                              let newImages = [...this.images];
+                              newImages[index] = URL.createObjectURL(file);
+                              this.images = newImages;
+                            }
+                          };
+                          input.click();
+                        }
+                      }"
+                    >
+                      <!-- 顶部文案区 -->
+                      <div class="flex flex-col items-center justify-center text-center z-10">
+                        <h1 
+                          :contenteditable="!isEditing"
+                          @blur="title = $el.innerText.trim()"
+                          @keydown.enter.prevent="$el.blur()"
+                          class="text-[13px] font-bold tracking-tight text-black outline-none cursor-text hover:bg-gray-100/60 rounded px-1 transition-colors"
+                          x-text="title"
+                        ></h1>
+                        <p 
+                          :contenteditable="!isEditing"
+                          @blur="subtitle = $el.innerText.trim()"
+                          @keydown.enter.prevent="$el.blur()"
+                          class="text-[9.5px] font-medium text-gray-400 leading-tight mt-0.5 outline-none cursor-text hover:bg-gray-100/60 rounded px-1 transition-colors"
+                          x-text="subtitle"
+                        ></p>
+                        <p 
+                          :contenteditable="!isEditing"
+                          @blur="subtext = $el.innerText.trim()"
+                          @keydown.enter.prevent="$el.blur()"
+                          class="text-[9.5px] font-medium text-gray-400 leading-tight outline-none cursor-text hover:bg-gray-100/60 rounded px-1 transition-colors"
+                          x-text="subtext"
+                        ></p>
+                      </div>
+
+                      <!-- 底部亚克力相框展示架区域 -->
+                      <div class="relative w-full h-[66px] flex items-end justify-center px-2">
+                        <!-- 亚克力半透明背板 -->
+                        <div class="absolute bottom-1 w-[285px] h-[30px] bg-gradient-to-b from-gray-200/50 to-gray-300/30 backdrop-blur-md rounded-t-sm border-t border-l border-r border-white/80 shadow-inner pointer-events-none"></div>
+
+                        <!-- 相框列表 -->
+                        <div class="relative z-10 flex items-end justify-center gap-2.5 mb-[3px]">
+                          <div @click="isEditing ? null : uploadImage(0)" class="w-[78px] h-[56px] bg-white rounded-[2px] border border-gray-300/80 shadow-[0_2px_5px_rgba(0,0,0,0.12)] overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform duration-200 flex-shrink-0">
+                            <img :src="images[0]" class="w-full h-full object-cover" />
+                          </div>
+                          <div @click="isEditing ? null : uploadImage(1)" class="w-[62px] h-[41px] bg-white rounded-[2px] border border-gray-300/80 shadow-[0_2px_5px_rgba(0,0,0,0.12)] overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform duration-200 flex-shrink-0">
+                            <img :src="images[1]" class="w-full h-full object-cover" />
+                          </div>
+                          <div @click="isEditing ? null : uploadImage(2)" class="w-[62px] h-[41px] bg-white rounded-[2px] border border-gray-300/80 shadow-[0_2px_5px_rgba(0,0,0,0.12)] overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform duration-200 flex-shrink-0">
+                            <img :src="images[2]" class="w-full h-full object-cover" />
+                          </div>
+                        </div>
+
+                        <!-- 亚克力底座托盘 -->
+                        <div class="absolute bottom-0 w-[295px] h-[5px] bg-gray-200/90 rounded-sm border-t border-b border-white shadow-sm pointer-events-none z-20"></div>
+                      </div>
+                    </div>
+                  </div>
+                </template>

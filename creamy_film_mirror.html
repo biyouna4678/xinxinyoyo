@@ -1,0 +1,21 @@
+      <!-- Creamy Film 2x4 小组件镜像 (简略版预览) -->
+      <template x-if="dragState.item.widgetType === 'creamy_film_2x4'">
+        <div class="relative w-[148px] h-[260px] flex flex-col items-center justify-between py-2 px-1 pointer-events-none opacity-90">
+          <div class="absolute inset-0 bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0"></div>
+          <div class="w-full h-[18px] flex items-center justify-center gap-1 mt-0.5 z-20 px-2">
+            <span class="font-sweet text-[12px] text-[#E29CA9] font-bold tracking-tight leading-none px-1 max-w-[100px] truncate" x-text="dragState.item.data?.titleText || 'Sweet memories'"></span>
+            <svg class="w-2.5 h-2.5 fill-[#E29CA9] shrink-0" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <div class="w-[116px] h-[92px] rounded-[3px] overflow-hidden bg-white border border-[#FADCE3] z-20">
+            <img :src="dragState.item.data?.topImg || 'https://i.ibb.co/DZfs4JH/IMG-5540.jpg'" class="w-full h-full object-cover block" />
+          </div>
+          <div class="w-[116px] h-[92px] rounded-[3px] overflow-hidden bg-white border border-[#FADCE3] z-20 mb-1">
+            <img :src="dragState.item.data?.bottomImg || 'https://i.ibb.co/ymZ4Q1t8/IMG-5543.jpg'" class="w-full h-full object-cover block" />
+          </div>
+          <div class="absolute -bottom-1 -right-1 w-9 h-9 z-30 drop-shadow-[0_2px_4px_rgba(255,182,193,0.4)]">
+            <img :src="dragState.item.data?.starSticker || 'https://i.ibb.co/FbVP5MHv/685-20260823014234.png'" class="w-full h-full object-contain block" />
+          </div>
+        </div>
+      </template>

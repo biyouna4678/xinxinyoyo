@@ -1,0 +1,60 @@
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+body {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.shake-anim {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.spin-slow {
+  animation: spinSlow 8s linear infinite;
+}
+
+/* 马卡龙莫兰迪低饱和色盘背景 */
+.macaron-picker-btn {
+  background: conic-gradient(
+    from 0deg,
+    #FEDFE9, #FFF9C5, #EDFFDB, #E6F5FF, #EADCF8, #FEDFE9
+  );
+}
+
+/* iOS 风格黑色渐进滑条 */
+input[type=range].ios-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, #2a2a2a, #111111);
+  border-radius: 10px;
+  height: 10px;
+}
+input[type=range].ios-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background: #333333;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+
+/* 模拟黑灰水泥微光质感壁纸 */
+.default-grey-wallpaper {
+  background: 
+    radial-gradient(circle at 50% 30%, #f0f2f5 0%, #d8dade 45%, #b5b8bc 100%),
+    linear-gradient(180deg, #e8eaec 0%, #a0a3a8 100%);
+}

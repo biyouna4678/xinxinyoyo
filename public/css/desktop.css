@@ -1,0 +1,266 @@
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      overscroll-behavior: none;
+      background-color: #BEBEBE;
+    }
+
+    .matte-frosted-icon {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%);
+      backdrop-filter: blur(20px) saturate(1.4) contrast(1.05);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4) contrast(1.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-top-color: rgba(255, 255, 255, 0.85);
+      border-left-color: rgba(255, 255, 255, 0.65);
+      border-bottom-color: rgba(0, 0, 0, 0.05);
+      border-right-color: rgba(0, 0, 0, 0.05);
+      box-shadow: 
+        inset 1px 1px 2px rgba(255, 255, 255, 0.7), 
+        inset -1px -1px 2px rgba(0, 0, 0, 0.05), 
+        0 4px 15px rgba(0, 0, 0, 0.05);
+      color: #ffffff !important;
+
+    
+    }
+
+    @keyframes iosJiggle {
+      0%   { transform: rotate(-0.8deg) translate(0px, -0.3px); }
+      25%  { transform: rotate(0.6deg)  translate(-0.3px, 0.3px); }
+      50%  { transform: rotate(-0.5deg)  translate(0.3px, -0.2px); }
+      75%  { transform: rotate(0.8deg)  translate(-0.2px, 0.2px); }
+      100% { transform: rotate(-0.8deg) translate(0px, -0.3px); }
+    }
+
+    .jiggle-anim {
+      animation: iosJiggle 0.28s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    }
+
+    .pop-feedback {
+      transform: scale(1.05) !important;
+      transition: transform 0.1s ease-out;
+    }
+
+    .smooth-reorder {
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .grid-cell-slot {
+      transition: opacity 0.15s ease-out, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .grid-cell-slot.placement-fail {
+      animation: springBack 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes springBack {
+      0%   { transform: scale(0.92); }
+      60%  { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes appPopIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .app-pop-in {
+      animation: appPopIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+/* 垂直浅色条纹背景 */
+.striped-bg {
+  background: repeating-linear-gradient(
+    90deg,
+    #ffffff,
+    #ffffff 18px,
+    #f4f4f6 18px,
+    #f4f4f6 36px
+  );
+}
+
+/* 黑胶唱片反光沟槽纹理 */
+.vinyl-grooves {
+  background: radial-gradient(
+    circle,
+    transparent 35%,
+    rgba(255, 255, 255, 0.45) 38%,
+    rgba(240, 220, 225, 0.25) 45%,
+    rgba(255, 255, 255, 0.55) 52%,
+    rgba(230, 210, 215, 0.25) 62%,
+    rgba(255, 255, 255, 0.45) 68%,
+    transparent 70%
+  );
+}
+
+/* 匀速无限旋转动画 */
+.spin-slow {
+  animation: spin 12s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 打字机手写感字体 */
+.font-typewriter {
+  font-family: 'Courier Prime', monospace;
+}
+
+/* 纤细手写体 */
+.font-sweet {
+  font-family: 'Patrick Hand', cursive;
+}
+
+/* SVG Path 矢量挖空：彻底镂空齿孔 */
+.film-mask-holes {
+  clip-path: path('M 10 0 L 138 0 A 10 10 0 0 1 148 10 L 148 250 A 10 10 0 0 1 138 260 L 10 260 A 10 10 0 0 1 138 260 L 10 260 A 10 10 0 0 1 0 250 L 0 10 A 10 10 0 0 1 10 0 Z M 5 16 A 1.5 1.5 0 0 0 3.5 17.5 L 3.5 25 A 1.5 1.5 0 0 0 5 26.5 L 11 26.5 A 1.5 1.5 0 0 0 12.5 25 L 12.5 17.5 A 1.5 1.5 0 0 0 11 16 Z M 5 45 A 1.5 1.5 0 0 0 3.5 46.5 L 3.5 54 A 1.5 1.5 0 0 0 5 55.5 L 11 55.5 A 1.5 1.5 0 0 0 12.5 54 L 12.5 46.5 A 1.5 1.5 0 0 0 11 45 Z M 5 74 A 1.5 1.5 0 0 0 3.5 75.5 L 3.5 83 A 1.5 1.5 0 0 0 5 84.5 L 11 84.5 A 1.5 1.5 0 0 0 12.5 83 L 12.5 75.5 A 1.5 1.5 0 0 0 11 74 Z M 5 103 A 1.5 1.5 0 0 0 3.5 104.5 L 3.5 112 A 1.5 1.5 0 0 0 5 113.5 L 11 113.5 A 1.5 1.5 0 0 0 12.5 112 L 12.5 104.5 A 1.5 1.5 0 0 0 11 103 Z M 5 132 A 1.5 1.5 0 0 0 3.5 133.5 L 3.5 141 A 1.5 1.5 0 0 0 5 142.5 L 11 142.5 A 1.5 1.5 0 0 0 12.5 141 L 12.5 133.5 A 1.5 1.5 0 0 0 11 132 Z M 5 161 A 1.5 1.5 0 0 0 3.5 162.5 L 3.5 170 A 1.5 1.5 0 0 0 5 171.5 L 11 171.5 A 1.5 1.5 0 0 0 12.5 170 L 12.5 162.5 A 1.5 1.5 0 0 0 11 161 Z M 5 190 A 1.5 1.5 0 0 0 3.5 191.5 L 3.5 199 A 1.5 1.5 0 0 0 5 200.5 L 11 200.5 A 1.5 1.5 0 0 0 12.5 199 L 12.5 191.5 A 1.5 1.5 0 0 0 11 190 Z M 5 219 A 1.5 1.5 0 0 0 3.5 220.5 L 3.5 228 A 1.5 1.5 0 0 0 5 229.5 L 11 229.5 A 1.5 1.5 0 0 0 12.5 228 L 12.5 220.5 A 1.5 1.5 0 0 0 11 219 Z M 137 16 A 1.5 1.5 0 0 0 135.5 17.5 L 135.5 25 A 1.5 1.5 0 0 0 137 26.5 L 143 26.5 A 1.5 1.5 0 0 0 144.5 25 L 144.5 17.5 A 1.5 1.5 0 0 0 143 16 Z M 137 45 A 1.5 1.5 0 0 0 135.5 46.5 L 135.5 54 A 1.5 1.5 0 0 0 137 55.5 L 143 55.5 A 1.5 1.5 0 0 0 144.5 54 L 144.5 46.5 A 1.5 1.5 0 0 0 143 45 Z M 137 74 A 1.5 1.5 0 0 0 135.5 75.5 L 135.5 83 A 1.5 1.5 0 0 0 137 84.5 L 143 84.5 A 1.5 1.5 0 0 0 144.5 83 L 144.5 75.5 A 1.5 1.5 0 0 0 143 74 Z M 137 103 A 1.5 1.5 0 0 0 135.5 104.5 L 135.5 112 A 1.5 1.5 0 0 0 137 113.5 L 143 113.5 A 1.5 1.5 0 0 0 144.5 112 L 144.5 104.5 A 1.5 1.5 0 0 0 143 103 Z M 137 132 A 1.5 1.5 0 0 0 135.5 133.5 L 135.5 141 A 1.5 1.5 0 0 0 137 142.5 L 143 142.5 A 1.5 1.5 0 0 0 144.5 141 L 144.5 133.5 A 1.5 1.5 0 0 0 143 132 Z M 137 161 A 1.5 1.5 0 0 0 135.5 162.5 L 135.5 170 A 1.5 1.5 0 0 0 137 171.5 L 143 171.5 A 1.5 1.5 0 0 0 144.5 170 L 144.5 162.5 A 1.5 1.5 0 0 0 143 161 Z M 137 190 A 1.5 1.5 0 0 0 135.5 191.5 L 135.5 199 A 1.5 1.5 0 0 0 137 200.5 L 143 200.5 A 1.5 1.5 0 0 0 144.5 199 L 144.5 191.5 A 1.5 1.5 0 0 0 143 190 Z M 137 219 A 1.5 1.5 0 0 0 135.5 220.5 L 135.5 228 A 1.5 1.5 0 0 0 137 229.5 L 143 229.5 A 1.5 1.5 0 0 0 144.5 228 L 144.5 220.5 A 1.5 1.5 0 0 0 143 219 Z');
+}
+
+/* 游戏机手写体 */
+.font-game {
+  font-family: 'Quicksand', sans-serif;
+}
+
+
+
+/* Smart text color adaptation for light wallpapers (Only affects text, not icon backgrounds) */
+.theme-light-wallpaper #desktop-status-bar,
+.theme-light-wallpaper #desktop-status-bar .text-white {
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+.theme-light-wallpaper #desktop-status-bar .bg-white {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+}
+.theme-light-wallpaper #desktop-status-bar .bg-white\/40 {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+.theme-light-wallpaper #desktop-status-bar .border-white {
+    border-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* App Labels (the text below icons) */
+.theme-light-wallpaper [data-grid-item] + span.text-white {
+    color: rgba(0, 0, 0, 0.85) !important;
+    text-shadow: none !important;
+}
+
+/* Desktop Clock */
+.theme-light-wallpaper .desktop-clock-text {
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Widgets text that used text-white */
+.theme-light-wallpaper span.text-white {
+    color: rgba(0, 0, 0, 0.85) !important;
+}
+.theme-light-wallpaper [data-grid-item] .text-white\/80 {
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Smart SVG color adaptation: Dark SVGs on light wallpaper */
+.theme-light-wallpaper .matte-frosted-icon svg, .theme-light-wallpaper .liquid-glass-icon svg,
+.theme-light-wallpaper .matte-frosted-icon svg, .theme-light-wallpaper .liquid-glass-icon svg *,
+.theme-light-wallpaper #dock-grid-container svg,
+.theme-light-wallpaper #dock-grid-container svg * {
+    color: rgba(60, 60, 67, 0.75) !important;
+}
+/* Dock page dots adaptation */
+.theme-light-wallpaper #dock-grid-container .bg-white {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+.theme-light-wallpaper #dock-grid-container .bg-white\/40 {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Liquid glass support for theme-light-wallpaper */
+.theme-light-wallpaper .matte-frosted-icon {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
+    backdrop-filter: blur(20px) saturate(1.4) contrast(1.05) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(1.4) contrast(1.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-top-color: rgba(255, 255, 255, 0.95) !important;
+    border-left-color: rgba(255, 255, 255, 0.8) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    border-right-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 
+      inset 1px 1px 2px rgba(255, 255, 255, 0.9), 
+      inset -1px -1px 2px rgba(0, 0, 0, 0.02), 
+      0 8px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+.theme-light-wallpaper [data-grid-item] .bg-white\/20 {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+}
+.theme-light-wallpaper #dock-grid-container .bg-white\/20 {
+    background-color: rgba(255, 255, 255, 0.35) !important;
+}
+.theme-light-wallpaper [data-grid-item] .border-white\/30, 
+.theme-light-wallpaper #dock-grid-container .border-white\/30,
+.theme-light-wallpaper [data-grid-item] .border-white\/40 {
+    border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Liquid glass Dock Icon Overexposure */
+.theme-light-wallpaper #dock-grid-container .matte-frosted-icon {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+    border-top-color: rgba(255, 255, 255, 0.8) !important;
+    border-left-color: rgba(255, 255, 255, 0.6) !important;
+    border-bottom-color: rgba(0, 0, 0, 0.03) !important;
+    border-right-color: rgba(0, 0, 0, 0.03) !important;
+    box-shadow: 
+      inset 1px 1px 2px rgba(255, 255, 255, 0.8), 
+      inset -1px -1px 2px rgba(0, 0, 0, 0.03), 
+      0 4px 15px rgba(0, 0, 0, 0.03) !important;
+}
+
+.liquid-glass-icon {
+  position: relative;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 8px 12px rgba(0, 0, 0, 0.10),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.02),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  overflow: hidden;
+}
+
+.liquid-glass-icon::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 60%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+.liquid-glass-icon::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 15%;
+  width: 70%;
+  height: 6px;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  filter: blur(2px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.liquid-glass-icon svg {
+  filter: drop-shadow(0px 1px 1.5px rgba(0, 0, 0, 0.25));
+}
+
+.w-\[56px\].liquid-glass-icon::after {
+  bottom: 4px;
+  height: 4px;
+}
