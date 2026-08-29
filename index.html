@@ -93,7 +93,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
   <script src="js/global-store.js"></script>
 </head>
-<body class="text-main min-h-screen relative overflow-hidden select-none font-serif overscroll-none touch-manipulation"
+<body class="text-main fixed inset-0 w-full h-[100dvh] overflow-hidden select-none font-serif overscroll-none touch-manipulation"
       x-data="desktopApp()"
       x-init="init()"
       @touchstart="handlePointerDown($event)"
@@ -150,7 +150,7 @@
   </div>
 
   <!-- 锁屏主视图 -->
-  <div class="relative z-10 h-screen flex flex-col justify-between pt-[max(3.5rem,calc(env(safe-area-inset-top,0px)+1.5rem))] pb-[max(1.25rem,calc(env(safe-area-inset-bottom,0px)+0.75rem))] px-5 transition-all duration-300 transform"
+  <div class="relative z-10 h-full flex flex-col justify-between pt-[max(3.5rem,calc(env(safe-area-inset-top,0px)+1.5rem))] pb-[max(1.25rem,calc(env(safe-area-inset-bottom,0px)+0.75rem))] px-5 transition-all duration-300 transform"
        :class="[
          isUnlocking ? '-translate-y-20 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100',
          (showPinPad || showCustomizePanel || showDateOptions) ? 'blur-sm scale-95 opacity-80' : 'blur-0 scale-100'
@@ -321,19 +321,79 @@
           </button>
         </template>
 
-        <div class="relative shrink-0">
-          <button class="w-[36px] h-[36px] rounded-full macaron-picker-btn border-2 border-white/80 flex items-center justify-center active:scale-95 transition-transform shadow-sm">
+        <!-- iOS：系统原生取色器 -->
+        <template x-if="platform === 'ios'">
+          <div class="relative shrink-0">
+            <button class="w-[36px] h-[36px] rounded-full dopamine-picker-btn border-2 border-white/80 flex items-center justify-center shadow-sm">
+            </button>
+            <input type="color" 
+                   x-model="clockColor" 
+                   class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
+          </div>
+        </template>
+
+        <!-- Android / 其他：自建色彩选择器 -->
+        <template x-if="platform !== 'ios'">
+          <button @click="openAndroidColorPicker()" 
+                  class="w-[36px] h-[36px] rounded-full dopamine-picker-btn border-2 border-white/80 flex items-center justify-center shadow-sm active:scale-95 transition-transform">
           </button>
-          <input type="color" 
-                 x-model="clockColor" 
-                 class="absolute inset-0 opacity-0 w-full h-full cursor-pointer" 
-                 title="选择自定义颜色" />
-        </div>
+        </template>
       </div>
     </div>
   </div>
 
-  <!-- 日期模式弹窗 -->
+
+  <!-- 密码输入界面 (Pin Pad) -->
+  <div id="pin-pad" x-show="showPinPad" 
+       x-transition:enter="transition ease-out duration-300"
+       x-transition:enter-start="opacity-0 backdrop-blur-none"
+       x-transition:enter-end="opacity-100 backdrop-blur-2xl"
+       x-transition:leave="transition ease-in duration-200"
+       x-transition:leave-start="opacity-100 backdrop-blur-2xl"
+       x-transition:leave-end="opacity-0 backdrop-blur-none"
+       class="fixed inset-0 z-[10000] flex flex-col items-center pt-24 pb-12 px-6 font-sans bg-black/40 backdrop-blur-2xl">
+    
+    <div class="text-white text-[16px] mb-8 font-medium tracking-widest text-center"
+         :class="pinError ? 'animate-pulse text-red-300' : ''">
+      <span x-text="pinError ? '密码错误' : '输入密码'"></span>
+    </div>
+
+    <!-- 密码点 -->
+    <div class="flex gap-4 mb-20" :class="pinError ? 'jiggle-anim' : ''">
+      <template x-for="i in 6">
+        <div class="w-[14px] h-[14px] rounded-full border border-white/60 transition-all duration-200 flex items-center justify-center"
+             :class="enteredPin.length >= i ? 'bg-white border-white' : 'bg-transparent'">
+        </div>
+      </template>
+    </div>
+
+    <!-- 数字键盘 -->
+    <div class="grid grid-cols-3 gap-x-6 gap-y-4 max-w-[280px] mx-auto mb-auto">
+      <template x-for="num in ['1','2','3','4','5','6','7','8','9']">
+        <button @click="pressPin(num)"
+                class="w-[75px] h-[75px] rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 backdrop-blur-md flex items-center justify-center text-[32px] text-white font-light transition-all active:scale-95 shadow-sm">
+          <span x-text="num"></span>
+        </button>
+      </template>
+      <div class="w-[75px] h-[75px]"></div> <!-- Empty for spacing -->
+      <button @click="pressPin('0')"
+              class="w-[75px] h-[75px] rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 backdrop-blur-md flex items-center justify-center text-[32px] text-white font-light transition-all active:scale-95 shadow-sm">
+        0
+      </button>
+      <button @click="deletePin()"
+              class="w-[75px] h-[75px] rounded-full flex items-center justify-center text-[16px] text-white/80 font-medium active:scale-95 hover:text-white transition-all">
+        清除
+      </button>
+    </div>
+
+    <!-- 底部取消 -->
+    <button @click="cancelPin()"
+            class="mt-auto text-[16px] text-white/80 font-medium active:scale-95 hover:text-white transition-all">
+      取消
+    </button>
+  </div>
+
+    <!-- 日期模式弹窗 -->
   <div x-show="showDateOptions"
        x-transition:enter="transition ease-out duration-200"
        x-transition:enter-start="opacity-0 scale-95"
@@ -388,51 +448,289 @@
     </div>
   </div>
 
-  <!-- PIN 码解锁层 (支持 6 位数 PIN 码) -->
-  <div x-show="showPinPad" 
-       x-transition:enter="transition ease-out duration-300"
-       x-transition:enter-start="opacity-0 translate-y-12"
-       x-transition:enter-end="opacity-100 translate-y-0"
-       x-transition:leave="transition ease-in duration-200"
-       x-transition:leave-start="opacity-100 translate-y-0"
-       x-transition:leave-end="opacity-0 translate-y-12"
-       class="fixed inset-0 z-50 bg-black/40 backdrop-blur-2xl flex flex-col items-center justify-between py-12 px-8">
-    
-    <div class="text-center pt-8 space-y-3">
-      <div class="text-[16px] text-white font-medium tracking-widest font-serif">输入密码</div>
-      <div class="flex items-center justify-center gap-3 pt-2" :class="pinError ? 'shake-anim' : ''">
-        <template x-for="i in 6" :key="i">
-          <div class="w-3.5 h-3.5 rounded-full border border-white/60 transition-all duration-150"
-               :class="enteredPin.length >= i ? 'bg-white scale-110 shadow-glow' : 'bg-transparent'"></div>
-        </template>
+  <!-- 自建色彩选择器面板 (Android / Web) -->
+  <div 
+      x-show="showAndroidColorPicker"
+      class="fixed inset-0 z-[100] flex flex-col justify-end overflow-hidden"
+      style="display: none;"
+  >
+      <!-- 遮罩 -->
+      <div 
+          x-show="showAndroidColorPicker"
+          x-transition:enter="transition ease-out duration-200"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="transition ease-in duration-200"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+          @click="closeAndroidColorPicker(false)"
+          class="absolute inset-0 bg-black/40 backdrop-blur-sm"
+      ></div>
+
+      <!-- 卡片主体 -->
+      <div 
+          x-show="showAndroidColorPicker"
+          x-transition:enter="transition ease-out duration-300 transform"
+          x-transition:enter-start="translate-y-full"
+          x-transition:enter-end="translate-y-0"
+          x-transition:leave="transition ease-in duration-200 transform"
+          x-transition:leave-start="translate-y-0"
+          x-transition:leave-end="translate-y-full"
+          class="relative w-full max-w-md mx-auto bg-white rounded-t-[32px] shadow-2xl flex flex-col pt-3 px-6 pb-[max(20px,env(safe-area-inset-bottom))] z-[101] max-h-[94vh] overflow-y-auto no-scrollbar font-sans"
+      >
+          <!-- 顶部操作栏 -->
+          <div class="flex flex-col items-center shrink-0 mb-3">
+              <div class="w-9 h-1 bg-gray-300 rounded-full mb-3"></div>
+              <div class="w-full flex items-center justify-between px-1">
+                  <button 
+                      @click="resetColor()"
+                      class="text-[12px] font-medium text-gray-400 hover:text-gray-900 active:opacity-60 transition-colors px-1 py-0.5 flex items-center space-x-1"
+                  >
+                      <svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                      <span>重置</span>
+                  </button>
+
+                  <h2 class="font-serif font-semibold text-[17px] text-gray-900">自定义取色</h2>
+                  
+                  <button 
+                      @click="closeAndroidColorPicker(true)"
+                      class="text-[15px] font-medium text-blue-500 active:opacity-60 transition-opacity px-1 py-0.5"
+                  >
+                      完成
+                  </button>
+              </div>
+          </div>
+
+          <!-- 主控制面板 -->
+          <div class="bg-[#F8F8FA] rounded-[24px] p-4 sm:p-5 border border-black/5 flex flex-col items-center">
+              
+              <!-- 点进去的满数值彩虹色盘 -->
+              <div class="relative w-56 h-56 flex items-center justify-center my-1 select-none">
+                  <div 
+                      class="relative w-52 h-52 rounded-full cursor-crosshair touch-none flex items-center justify-center"
+                      @pointerdown="startDrag($event)"
+                      @pointermove="onDrag($event)"
+                      @pointerup="stopDrag()"
+                      @pointercancel="stopDrag()"
+                      x-ref="wheelContainer"
+                  >
+                      <canvas x-ref="colorCanvas" width="220" height="220" class="w-full h-full drop-shadow-sm"></canvas>
+                      
+                      <!-- 拾取光标 -->
+                      <div 
+                          class="absolute w-6 h-6 rounded-full border-2 border-white shadow-md -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-100 ease-out flex items-center justify-center"
+                          :class="androidPicker.isDragging ? 'scale-125 shadow-lg' : 'scale-100'"
+                          :style="{ left: androidPicker.pointerPos.x + 'px', top: androidPicker.pointerPos.y + 'px', backgroundColor: androidPicker.currentRgbOpaqueStr }"
+                      >
+                          <div class="w-1.5 h-1.5 rounded-full bg-white shadow-sm"></div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- 调节控制区 -->
+              <div class="w-full space-y-3.5 mt-2 px-1">
+                  
+                  <!-- 饱和度调节 (默认 100%) -->
+                  <div class="flex flex-col space-y-1.5">
+                      <div class="flex justify-between items-center text-[12px] text-gray-500 font-medium">
+                          <span>饱和度调节</span>
+                          <div class="flex items-center space-x-0.5">
+                              <input 
+                                  type="number" 
+                                  min="0" 
+                                  max="100" 
+                                  x-model.number="androidPicker.saturation" 
+                                  @input="onSaturationInput()"
+                                  class="w-8 font-mono text-right text-[12px] font-bold text-gray-900 bg-transparent outline-none"
+                              />
+                              <span class="font-mono text-[12px] text-gray-900">%</span>
+                          </div>
+                      </div>
+                      <input 
+                          type="range" 
+                          min="0" 
+                          max="100" 
+                          x-model.number="androidPicker.saturation"
+                          @input="updateColorFromHsb()"
+                          class="w-full android-picker-slider"
+                          :style="`background: linear-gradient(to right, ${satTrackBg.left}, ${satTrackBg.right});`"
+                      />
+                  </div>
+
+                  <!-- 不透明度 (默认 100%) -->
+                  <div class="flex flex-col space-y-1.5">
+                      <div class="flex justify-between items-center text-[12px] text-gray-500 font-medium">
+                          <span>不透明度</span>
+                          <span class="font-mono text-[12px] font-bold text-gray-900" x-text="androidPicker.alpha + '%'"></span>
+                      </div>
+                      <div class="relative w-full h-[10px] rounded-[5px] overflow-hidden checkerboard-pattern border border-black/5 flex items-center">
+                          <input 
+                              type="range" 
+                              min="0" 
+                              max="100" 
+                              x-model.number="androidPicker.alpha"
+                              @input="updateColorFromHsb()"
+                              class="w-full absolute inset-0 opacity-100 z-10 android-picker-slider"
+                              :style="`background: linear-gradient(to right, transparent, ${androidPicker.currentRgbOpaqueStr});`"
+                          />
+                      </div>
+                  </div>
+
+                  <!-- 明度调节 (默认 100%) -->
+                  <div class="flex flex-col space-y-1.5 relative">
+                      <div class="flex justify-between items-center text-[12px] text-gray-500 font-medium">
+                          <span>明度调节</span>
+                          <div class="flex items-center space-x-0.5">
+                              <input 
+                                  type="number" 
+                                  min="0" 
+                                  max="100" 
+                                  x-model.number="androidPicker.brightness" 
+                                  @input="updateColorFromHsb()"
+                                  class="w-8 font-mono text-right text-[12px] font-bold text-gray-900 bg-transparent outline-none"
+                              />
+                              <span class="font-mono text-[12px] text-gray-900">%</span>
+                          </div>
+                      </div>
+                      <div class="relative w-full flex items-center">
+                          <div 
+                              class="absolute -top-7 bg-black text-white px-2 py-0.5 rounded-full text-[10px] font-mono font-bold shadow-md -translate-x-1/2 pointer-events-none transition-all duration-75 z-20"
+                              :style="{ left: brightnessBubblePos + '%' }"
+                          >
+                              <span x-text="androidPicker.brightness + '%'"></span>
+                          </div>
+                          <input 
+                              type="range" 
+                              min="0" 
+                              max="100" 
+                              x-model.number="androidPicker.brightness"
+                              @input="updateColorFromHsb()"
+                              class="w-full android-picker-slider"
+                              style="background: linear-gradient(to right, #000000, #FFFFFF);"
+                          />
+                      </div>
+                  </div>
+
+                  <!-- 色相与 Hex 输入栏 -->
+                  <div class="flex items-center justify-between pt-2 border-t border-gray-200/60 mt-1.5">
+                      <div class="flex items-center space-x-1 mt-1.5">
+                          <span class="text-[12px] text-gray-500 font-medium">色相</span>
+                          <input 
+                              type="number" 
+                              min="0" 
+                              max="360" 
+                              x-model.number="androidPicker.hue"
+                              @input="onHueInput()"
+                              class="w-10 font-mono text-[12px] font-bold text-gray-900 bg-white px-1.5 py-0.5 rounded border border-black/10 outline-none text-center"
+                          />
+                          <span class="text-[12px] text-gray-500 font-medium">°</span>
+                      </div>
+                      
+                      <div class="flex items-center space-x-1 bg-white px-2.5 py-1 rounded-lg border border-black/10 mt-1.5">
+                          <span class="text-[12px] font-mono font-semibold text-gray-400">#</span>
+                          <input 
+                              type="text" 
+                              x-model="androidPicker.hexInput"
+                              @input="onHexInput($event)"
+                              maxlength="8"
+                              class="w-20 font-mono text-[12px] font-semibold text-gray-900 outline-none uppercase bg-transparent"
+                          />
+                      </div>
+                  </div>
+
+              </div>
+
+              <!-- 最近使用颜色栏 -->
+              <div class="w-full mt-3 pt-2.5 border-t border-gray-200/60">
+                  <div class="text-[12px] text-gray-500 font-medium mb-1.5 px-1">最近使用</div>
+                  <div class="flex items-center space-x-2.5 overflow-x-auto no-scrollbar py-0.5">
+                      <template x-for="(c, idx) in androidPicker.recentColors" :key="idx">
+                          <button 
+                              @click="selectPresetColor(c)"
+                              class="w-6 h-6 rounded-full shadow-sm border border-black/10 shrink-0 checkerboard-pattern relative overflow-hidden active:scale-110 transition-transform"
+                          >
+                              <div class="absolute inset-0" :style="{ backgroundColor: c }"></div>
+                          </button>
+                      </template>
+                  </div>
+              </div>
+
+              <!-- 预设调色板切换 -->
+              <div class="w-full mt-3 pt-2.5 border-t border-gray-200/60">
+                  <div class="flex items-center justify-between mb-3 px-1">
+                      <span class="text-[12px] text-gray-500 font-medium">预设调色板</span>
+                      <div class="flex items-center bg-gray-200/70 p-0.5 rounded-lg text-[11px] font-medium text-gray-600">
+                          <button 
+                              @click="androidPicker.presetMode = 'circle'"
+                              :class="androidPicker.presetMode === 'circle' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'"
+                              class="px-3 py-0.5 rounded-md transition-all"
+                          >
+                              圆形
+                          </button>
+                          <button 
+                              @click="androidPicker.presetMode = 'grid'"
+                              :class="androidPicker.presetMode === 'grid' ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500'"
+                              class="px-3 py-0.5 rounded-md transition-all"
+                          >
+                              网格
+                          </button>
+                      </div>
+                  </div>
+
+                  <!-- 圆形模式 -->
+                  <div x-show="androidPicker.presetMode === 'circle'" class="w-full py-1">
+                      <div class="flex flex-col space-y-2.5 w-full">
+                          <template x-for="r in 8" :key="r">
+                              <div class="flex justify-between items-center w-full">
+                                  <template x-for="c in 10" :key="c">
+                                      <button 
+                                          @click="selectP2Color(r - 1, c - 1)"
+                                          class="w-6 h-6 rounded-full border border-black/5 active:scale-125 transition-transform shrink-0 focus:outline-none shadow-sm"
+                                          :style="{ backgroundColor: getP2Color(r - 1, c - 1) }"
+                                      ></button>
+                                  </template>
+                              </div>
+                          </template>
+                      </div>
+                  </div>
+
+                  <!-- 网格模式 -->
+                  <div x-show="androidPicker.presetMode === 'grid'" class="w-full py-1">
+                      <div class="flex flex-col space-y-1.5 w-full">
+                          <template x-for="(row, rIdx) in androidPicker.horizontalGridRows" :key="rIdx">
+                              <div class="flex w-full h-4 rounded-sm overflow-hidden border border-black/5">
+                                  <template x-for="(hex, cIdx) in row" :key="cIdx">
+                                      <button 
+                                          @click="selectPresetColor(hex)"
+                                          class="flex-1 h-full active:opacity-80 transition-opacity"
+                                          :style="{ backgroundColor: hex }"
+                                      ></button>
+                                  </template>
+                              </div>
+                          </template>
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+
+          <!-- 确认按钮 -->
+          <div class="mt-4 mb-2 shrink-0">
+              <button 
+                  @click="closeAndroidColorPicker(true)"
+                  class="w-full h-[48px] rounded-[16px] bg-blue-500 text-white font-medium text-[15px] active:scale-[0.98] transition-transform shadow-sm flex items-center justify-center"
+              >
+                  确认使用
+              </button>
+          </div>
+
       </div>
-    </div>
-
-    <div class="w-full max-w-xs grid grid-cols-3 gap-5 text-white font-sans my-auto">
-      <template x-for="num in ['1','2','3','4','5','6','7','8','9']" :key="num">
-        <button @click="pressPin(num)" 
-                class="w-[68px] h-[68px] mx-auto rounded-full bg-white/15 border border-white/20 text-[26px] font-light flex items-center justify-center active:bg-white/35 transition-colors">
-          <span x-text="num"></span>
-        </button>
-      </template>
-      <div></div>
-      <button @click="pressPin('0')" 
-              class="w-[68px] h-[68px] mx-auto rounded-full bg-white/15 border border-white/20 text-[26px] font-light flex items-center justify-center active:bg-white/35 transition-colors">
-        0
-      </button>
-      <button @click="deletePin()" class="w-[68px] h-[68px] mx-auto rounded-full flex items-center justify-center text-[13px] text-white/70 active:text-white">
-        清除
-      </button>
-    </div>
-
-    <button @click="cancelPin()" class="text-[14px] text-white/60 font-serif tracking-widest hover:text-white">
-      取消
-    </button>
   </div>
 
   <script src="js/lockscreen.js"></script>
-
   </div>
+  
   <!-- ================= END LOCKSCREEN ================= -->
 
 
@@ -507,7 +805,7 @@
   </div>
 
   <!-- 3. 桌面主布局 -->
-  <div class="relative z-10 h-screen flex flex-col justify-between pt-[max(4.5rem,calc(env(safe-area-inset-top,20px)+2.5rem))] pb-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.5rem))] px-4 app-pop-in">
+  <div class="relative z-10 h-full flex flex-col justify-between pt-[max(4.5rem,calc(env(safe-area-inset-top,20px)+2.5rem))] pb-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.5rem))] px-4 app-pop-in">
 
     <!-- 桌面可滚动内容区（统一网格：应用图标 + 小组件共存） -->
     <div class="w-full max-w-sm mx-auto overflow-hidden no-scrollbar pt-1"

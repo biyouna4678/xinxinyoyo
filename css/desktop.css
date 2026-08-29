@@ -279,3 +279,55 @@
   bottom: 4px;
   height: 4px;
 }
+
+/* 安卓选择器专用样式 */
+.checkerboard-pattern {
+    background-color: #ffffff;
+    background-image: linear-gradient(45deg, #e0e0e0 25%, transparent 25%), 
+                      linear-gradient(-45deg, #e0e0e0 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, #e0e0e0 75%), 
+                      linear-gradient(-45deg, transparent 75%, #e0e0e0 75%);
+    background-size: 10px 10px;
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+.dopamine-picker-btn {
+    background: conic-gradient(
+        from 0deg,
+        #FFB3BA, 
+        #FFDFBA, 
+        #FFFFBA, 
+        #BAFFC9, 
+        #BAE1FF, 
+        #C9BBF0, 
+        #FFB3BA  
+    );
+}
+
+.android-picker-slider {
+    -webkit-appearance: none;
+    background: transparent;
+    position: relative;
+    z-index: 10;
+}
+.android-picker-slider:focus { outline: none; }
+.android-picker-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.android-picker-slider::-webkit-slider-thumb {
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.25), 0px 0px 1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -6px;
+    transition: transform 0.1s ease;
+}
+.android-picker-slider:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+}
