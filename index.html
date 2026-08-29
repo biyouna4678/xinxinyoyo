@@ -22,7 +22,7 @@
   <!-- Tailwind CSS CDN -->
   <style>
     @media (display-mode: standalone) {
-      #desktop-status-bar {
+      .mock-status-bar {
         display: none !important;
       }
     }
@@ -127,7 +127,7 @@
   </div>
 
   <!-- 2. 状态栏 -->
-  <div id="desktop-status-bar" class="absolute top-0 left-0 right-0 z-40 pt-3.5 px-7 flex items-center justify-between text-white font-sans drop-shadow-sm transition-colors">
+  <div class="mock-status-bar absolute top-0 left-0 right-0 z-40 pt-3.5 px-7 flex items-center justify-between text-white font-sans drop-shadow-sm transition-colors">
     <span class="font-bold text-[15px] tracking-tight" x-text="currentTime"></span>
 
     <div class="flex items-center gap-2 text-white transition-colors">
@@ -453,7 +453,7 @@
   </div>
 
   <!-- 2. 状态栏 / 编辑导航栏 切换区域 -->
-  <div class="absolute top-0 left-0 right-0 z-40 h-[52px]">
+  <div class="absolute top-0 left-0 right-0 z-40 h-[max(52px,calc(env(safe-area-inset-top,0px)+52px))]">
     <!-- 常态状态栏 -->
     <div x-show="!isEditing"
          x-transition:enter="transition-all duration-300"
@@ -462,7 +462,7 @@
          x-transition:leave="transition-all duration-300"
          x-transition:leave-start="translate-y-0 opacity-100"
          x-transition:leave-end="-translate-y-full opacity-0"
-         class="absolute inset-0 pt-3.5 px-7 flex items-center justify-between text-white font-sans pointer-events-none">
+         class="mock-status-bar absolute inset-0 pt-[max(0.875rem,calc(env(safe-area-inset-top,0px)+0.875rem))] px-7 flex items-center justify-between text-white font-sans pointer-events-none">
       <span class="font-bold text-[14px] tracking-tight" x-text="currentTime"></span>
 
       <div class="flex items-center gap-2 text-white">
@@ -494,7 +494,7 @@
          x-transition:leave="transition-all duration-300"
          x-transition:leave-start="translate-y-0 opacity-100"
          x-transition:leave-end="-translate-y-full opacity-0"
-         class="absolute inset-0 bg-white/30 backdrop-blur-xl border-b border-white/20 px-5 flex items-center justify-between shadow-sm">
+         class="absolute inset-0 bg-white/30 backdrop-blur-xl border-b border-white/20 pt-[env(safe-area-inset-top,0px)] px-5 flex items-center justify-between shadow-sm">
       <!-- 左侧：添加小组件按钮，点击即可召唤组件库 -->
       <button @click.stop="showWidgetPicker = true"
               :disabled="showWidgetPicker"
@@ -2479,7 +2479,7 @@
        @click.self="showWidgetPicker = false"
        class="fixed inset-0 z-50 bg-black/20 flex flex-col justify-end">
 
-    <div class="w-full bg-white/95 backdrop-blur-2xl rounded-t-[32px] shadow-2xl p-6 space-y-5 max-h-[85vh] overflow-y-auto no-scrollbar"
+    <div class="w-full bg-white/95 backdrop-blur-2xl rounded-t-[32px] shadow-2xl p-6 pb-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] space-y-5 max-h-[85vh] overflow-y-auto no-scrollbar"
          @click.stop>
 
       <!-- 下拉手柄与标题 -->
