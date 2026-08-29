@@ -1,4 +1,4 @@
-const CACHE_NAME = 'starweave-v13';
+const CACHE_NAME = 'starweave-v14';
 
 const ASSETS_TO_CACHE = [
   '/',
