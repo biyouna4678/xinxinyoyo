@@ -11,7 +11,7 @@
   <!-- iOS 专属 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="星织">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
 
@@ -20,6 +20,13 @@
   
 
   <!-- Tailwind CSS CDN -->
+  <style>
+    @media (display-mode: standalone) {
+      #desktop-status-bar {
+        display: none !important;
+      }
+    }
+  </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Alpine.js CDN -->
   <script defer crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -143,7 +150,7 @@
   </div>
 
   <!-- 锁屏主视图 -->
-  <div class="relative z-10 h-screen flex flex-col justify-between pt-14 pb-6 px-5 transition-all duration-300 transform"
+  <div class="relative z-10 h-screen flex flex-col justify-between pt-[max(3.5rem,calc(env(safe-area-inset-top,0px)+1rem))] pb-[max(2.5rem,calc(env(safe-area-inset-bottom,0px)+2rem))] px-5 transition-all duration-300 transform"
        :class="[
          isUnlocking ? '-translate-y-20 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100',
          (showPinPad || showCustomizePanel || showDateOptions) ? 'blur-sm scale-95 opacity-80' : 'blur-0 scale-100'
@@ -502,7 +509,7 @@
   </div>
 
   <!-- 3. 桌面主布局 -->
-  <div class="relative z-10 h-screen flex flex-col justify-between pt-16 pb-3 px-4 app-pop-in">
+  <div class="relative z-10 h-screen flex flex-col justify-between pt-[max(4rem,calc(env(safe-area-inset-top,0px)+1rem))] pb-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] px-4 app-pop-in">
 
     <!-- 桌面可滚动内容区（统一网格：应用图标 + 小组件共存） -->
     <div class="w-full max-w-sm mx-auto overflow-hidden no-scrollbar pt-1"
