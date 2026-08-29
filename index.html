@@ -127,7 +127,7 @@
   </div>
 
   <!-- 2. 状态栏 -->
-  <div class="mock-status-bar absolute top-0 left-0 right-0 z-40 pt-3.5 px-7 flex items-center justify-between text-white font-sans drop-shadow-sm transition-colors">
+  <div class="mock-status-bar absolute top-0 left-0 right-0 z-40 pt-[max(0.5rem,calc(env(safe-area-inset-top,0px)+0.5rem))] px-7 flex items-center justify-between text-white font-sans drop-shadow-sm transition-colors">
     <span class="font-bold text-[15px] tracking-tight" x-text="currentTime"></span>
 
     <div class="flex items-center gap-2 text-white transition-colors">
@@ -453,7 +453,7 @@
   </div>
 
   <!-- 2. 状态栏 / 编辑导航栏 切换区域 -->
-  <div class="absolute top-0 left-0 right-0 z-40 h-[max(60px,calc(env(safe-area-inset-top,20px)+48px))]">
+  <div class="absolute top-0 left-0 right-0 z-40 h-[max(46px,calc(env(safe-area-inset-top,10px)+34px))]">
     <!-- 常态状态栏 -->
     <div x-show="!isEditing"
          x-transition:enter="transition-all duration-300"
@@ -462,7 +462,7 @@
          x-transition:leave="transition-all duration-300"
          x-transition:leave-start="translate-y-0 opacity-100"
          x-transition:leave-end="-translate-y-full opacity-0"
-         class="mock-status-bar absolute inset-0 pb-3 px-7 flex items-end justify-between text-white font-sans pointer-events-none">
+         class="mock-status-bar absolute inset-0 pb-1.5 px-7 flex items-end justify-between text-white font-sans pointer-events-none">
       <span class="font-bold text-[14px] tracking-tight translate-y-[1px]" x-text="currentTime"></span>
 
       <div class="flex items-center gap-2 text-white">
@@ -492,7 +492,7 @@
          x-transition:leave="transition-all duration-300"
          x-transition:leave-start="translate-y-0 opacity-100"
          x-transition:leave-end="-translate-y-full opacity-0"
-         class="absolute inset-0 bg-white/30 backdrop-blur-xl border-b border-white/20 pb-3 px-5 flex items-end justify-between shadow-sm">
+         class="absolute inset-0 bg-white/30 backdrop-blur-xl border-b border-white/20 pb-1.5 px-5 flex items-end justify-between shadow-sm">
       <!-- 左侧：添加小组件按钮，点击即可召唤组件库 -->
       <button @click.stop="showWidgetPicker = true"
               :disabled="showWidgetPicker"
