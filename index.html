@@ -99,9 +99,23 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
   <script src="js/global-store.js"></script>
-  <style>html { background-color: #1c1c1e; }</style>
+  
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #1c1c1e;
+    }
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      min-height: -webkit-fill-available;
+      padding-bottom: env(safe-area-inset-bottom);
+      box-sizing: border-box;
+    }
+  </style>
 </head>
-<body class="bg-[#1c1c1e] text-main fixed inset-0 w-full h-[100dvh] overflow-hidden select-none font-serif overscroll-none touch-manipulation"
+<body class="text-main relative w-full overflow-hidden select-none font-serif overscroll-none touch-manipulation"
       x-data="desktopApp()"
       x-init="init()"
       @touchstart="handlePointerDown($event)"
@@ -114,7 +128,7 @@
       @touchend.window="endDrag($event)">
   <!-- ================= LOCKSCREEN LAYER ================= -->
   <div id="lockscreen-layer" x-data="lockScreenApp()" x-show="!unlocked"
-       class="fixed top-0 left-0 w-full h-[100dvh] z-[9999] bg-black text-main font-serif transition-transform duration-500"
+       class="absolute top-0 left-0 w-full h-full z-[9999] bg-black text-main font-serif transition-transform duration-500"
        :class="isUnlocking ? '-translate-y-[100vh] opacity-0' : 'translate-y-0 opacity-100'">
     
 
@@ -743,7 +757,7 @@
 
 
   <!-- 1. 全屏背景层 -->
-  <div class="absolute top-0 left-0 w-full h-[100dvh] z-0 pointer-events-none bg-[#1c1c1e]">
+  <div class="absolute top-0 left-0 w-full h-full z-0 pointer-events-none bg-[#1c1c1e]">
     <template x-if="desktopSettings && desktopSettings.wallpaperUrl">
       <div>
           <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-all duration-500"
@@ -813,7 +827,7 @@
   </div>
 
   <!-- 3. 桌面主布局 -->
-  <div class="relative z-10 h-full flex flex-col justify-between pt-[max(4.5rem,calc(env(safe-area-inset-top,20px)+2.5rem))] pb-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.5rem))] px-4 app-pop-in">
+  <div class="relative z-10 h-full flex flex-col justify-between pt-[max(4.5rem,calc(env(safe-area-inset-top,20px)+2.5rem))] pb-3 px-4 app-pop-in">
 
     <!-- 桌面可滚动内容区（统一网格：应用图标 + 小组件共存） -->
     <div class="w-full max-w-sm mx-auto overflow-hidden no-scrollbar pt-1"
