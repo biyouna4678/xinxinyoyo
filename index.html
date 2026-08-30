@@ -6,7 +6,7 @@
   <title>星织 · 桌面系统 (统一网格版)</title>
   
   <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.webmanifest?v=3">
+  <link rel="manifest" href="/manifest.webmanifest">
 
   <!-- iOS 专属 -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -102,16 +102,25 @@
   
   <style>
     html, body {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
       margin: 0;
-      padding: 0;
-      background: #1c1c1e;
+      background-color: #BCBCBC; /* desktop grey fallback */
       overflow: hidden;
-      overscroll-behavior: none;
+    }
+    body {
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+    }
+    /* iOS Safari Fullscreen Safe bg */
+    .fullscreen-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      min-height: -webkit-fill-available;
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
     }
   </style>
 </head>
@@ -128,7 +137,7 @@
       @touchend.window="endDrag($event)">
   <!-- ================= LOCKSCREEN LAYER ================= -->
   <div id="lockscreen-layer" x-data="lockScreenApp()" x-show="!unlocked"
-       class="fixed top-0 left-0 w-[100vw] h-[100dvh] z-[9999] bg-black text-main font-serif transition-transform duration-500"
+       class="fixed top-0 left-0 w-full h-full min-h-[-webkit-fill-available] z-[9999] bg-transparent text-main font-serif transition-transform duration-500"
        :class="isUnlocking ? '-translate-y-[100vh] opacity-0' : 'translate-y-0 opacity-100'">
     
 
@@ -138,11 +147,11 @@
   <input type="file" id="avatarInput" accept="image/*" class="hidden" @change="changeAvatar($event)">
 
   <!-- 1. 全屏壁纸层 -->
-  <div class="absolute top-0 left-0 w-full h-full z-0 default-grey-wallpaper bg-[#1c1c1e]">
+  <div class="fullscreen-bg bg-[#BCBCBC]">
     <template x-if="settings.wallpaper">
-      <div class="absolute inset-0 z-0">
+      <div class="absolute top-0 left-0 w-full h-full z-0">
         <img :src="settings.wallpaper" class="w-full h-full object-cover transition-all duration-300" :style="'filter: ' + settings.filterStyle + ';'" alt="Lockscreen Wallpaper" />
-        <div class="absolute inset-0 pointer-events-none transition-opacity duration-300" :style="`background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,${settings.vignetteOpacity}) 100%);`"></div>
+        <div class="absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-300" :style="`background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,${settings.vignetteOpacity}) 100%);`"></div>
       </div>
     </template>
     <div class="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none"></div>
@@ -234,7 +243,7 @@
              title="点击更换头像"
              class="w-[46px] h-[46px] rounded-full overflow-hidden border border-white/50 shrink-0 shadow-md cursor-pointer hover:opacity-90 active:scale-95 transition-all duration-200 group relative">
           <img :src="settings.avatarUrl" class="w-full h-full object-cover" alt="User Avatar" />
-          <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <div class="absolute top-0 left-0 w-full h-full bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <svg class="w-4 h-4 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
               <circle cx="12" cy="13" r="3"/>
@@ -671,7 +680,7 @@
                               @click="selectPresetColor(c)"
                               class="w-6 h-6 rounded-full shadow-sm border border-black/10 shrink-0 checkerboard-pattern relative overflow-hidden active:scale-110 transition-transform"
                           >
-                              <div class="absolute inset-0" :style="{ backgroundColor: c }"></div>
+                              <div class="absolute top-0 left-0 w-full h-full" :style="{ backgroundColor: c }"></div>
                           </button>
                       </template>
                   </div>
@@ -757,17 +766,17 @@
 
 
   <!-- 1. 全屏背景层 -->
-  <div class="fixed top-0 left-0 w-[100vw] h-[100dvh] z-0 pointer-events-none bg-[#1c1c1e]">
-    <template x-if="desktopSettings && desktopSettings.wallpaperUrl">      <div class="absolute inset-0">
-          <div class="absolute inset-0 bg-cover bg-center transition-all duration-500"
+  <div class="fullscreen-bg pointer-events-none bg-[#BCBCBC]">
+    <template x-if="desktopSettings && desktopSettings.wallpaperUrl">      <div class="absolute top-0 left-0 w-full h-full">
+          <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center transition-all duration-500"
                :class="desktopSettings.isBlurred ? 'scale-110' : ''"
                :style="`background-image: url('${desktopSettings.wallpaperUrl}'); filter: ${desktopSettings.filterStyle};`"></div>
-          <div class="absolute inset-0 pointer-events-none transition-opacity duration-500"
+          <div class="absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-500"
                :style="`background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,${desktopSettings.vignetteOpacity}) 100%);`"></div>
       </div>
     </template>
     <template x-if="!desktopSettings || !desktopSettings.wallpaperUrl">
-      <div class="absolute inset-0 bg-gradient-to-b from-[#e8eaec] via-[#d5d7da] to-[#b5b8bc]"></div>
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#e8eaec] via-[#d5d7da] to-[#b5b8bc]"></div>
     </template>
   </div>
 
@@ -928,7 +937,7 @@
                         >
                           <div class="w-full h-full rounded-[6px] overflow-hidden bg-black/50 relative">
                             <img :src="screenImg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" alt="Screen Content" />
-                            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none"></div>
+                            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none"></div>
                           </div>
                         </div>
 
@@ -1058,7 +1067,7 @@
                       }"
                     >
                       <!-- 1. 提亮底板 -->
-                      <div class="absolute inset-0 bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0 pointer-events-none"></div>
+                      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0 pointer-events-none"></div>
 
                       <!-- 2. 顶部文案可内联编辑区域 -->
                       <div class="w-full h-[18px] flex items-center justify-center gap-1 mt-0.5 z-20 px-2">
@@ -1245,7 +1254,7 @@
                         <div class="absolute inset-1 rounded-full border border-pink-100/40"></div>
                         
                         <!-- 唱片圈层 2: 黑胶高光沟槽 -->
-                        <div class="absolute inset-0 rounded-full vinyl-grooves pointer-events-none"></div>
+                        <div class="absolute top-0 left-0 w-full h-full rounded-full vinyl-grooves pointer-events-none"></div>
 
                         <!-- 唱片圈层 3: 内圈粉白渐变盘面 -->
                         <div class="w-[92px] h-[92px] rounded-full border border-pink-200/50 bg-gradient-to-tr from-white/30 via-pink-50/20 to-white/40 flex items-center justify-center relative">
@@ -1612,7 +1621,7 @@
                     <!-- Wrapper to preserve exactly 335x158 proportions and perfect overlap -->
                     <div class="w-[335px] h-[158px] relative bg-transparent rounded-[36px] border border-white/20 select-none box-border shadow-sm shrink-0">
                       <!-- 散落小爱心装饰 -->
-                      <div class="absolute inset-0 pointer-events-none text-white/50 text-[10px]">
+                      <div class="absolute top-0 left-0 w-full h-full pointer-events-none text-white/50 text-[10px]">
                         <span class="absolute top-2 left-3">♡</span>
                         <span class="absolute top-5 right-2">♡</span>
                         <span class="absolute bottom-6 left-2">♡</span>
@@ -1747,7 +1756,7 @@
                     >
                       
                       <!-- 背景散落小星星装饰 -->
-                    <div class="absolute inset-0 pointer-events-none text-white/60 font-light text-xs">
+                    <div class="absolute top-0 left-0 w-full h-full pointer-events-none text-white/60 font-light text-xs">
                       <span class="absolute top-3 left-[48%]">★</span>
                       <span class="absolute top-2 right-12 text-sm">☆</span>
                       <span class="absolute bottom-3 left-[41%] text-xs">☆</span>
@@ -1764,7 +1773,7 @@
                       <img referrerpolicy="no-referrer" :src="leftImg" alt="Left Main Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       
                       <!-- 左侧图上的相框白色同心圆与爱心饰物 -->
-                      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
                         <div class="w-12 h-12 rounded-full border-2 border-white/80 flex items-center justify-center">
                           <div class="w-4 h-4 rounded-full bg-white/90"></div>
                         </div>
@@ -2307,7 +2316,7 @@
                           >
                             <img referrerpolicy="no-referrer" :src="item.img" :alt="item.name" class="w-full h-full object-cover" />
                             <!-- Hover 提示框 -->
-                            <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute top-0 left-0 w-full h-full bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                               <span class="text-[10px] text-white font-medium">更换</span>
                             </div>
                           </div>
@@ -2469,7 +2478,7 @@
             <div class="relative w-full h-[126px] bg-[#312F35] rounded-[12px] p-2 flex items-center justify-center overflow-hidden border-2 border-[#E5C3CC]">
               <div class="w-full h-full rounded-[6px] overflow-hidden bg-black/50 relative">
                 <img :src="dragState.item.data?.screenImg || 'https://i.ibb.co/Rkp13sgv/IMG-5555.jpg'" class="w-full h-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-transparent via-white/10 to-white/25"></div>
               </div>
             </div>
             <div class="w-full flex-1 flex flex-col justify-between pt-2 pb-1 px-1 relative">
@@ -2525,7 +2534,7 @@
       </template>
       <template x-if="dragState.item.widgetType === 'creamy_film_2x4'">
         <div class="relative w-[148px] h-[260px] flex flex-col items-center justify-between py-2 px-1 pointer-events-none opacity-90">
-          <div class="absolute inset-0 bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0"></div>
+          <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0"></div>
           <div class="w-full h-[18px] flex items-center justify-center gap-1 mt-0.5 z-20 px-2">
             <span class="font-sweet text-[12px] text-[#E29CA9] font-bold tracking-tight leading-none px-1 max-w-[100px] truncate" x-text="dragState.item.data?.titleText || 'Sweet memories'"></span>
             <svg class="w-2.5 h-2.5 fill-[#E29CA9] shrink-0" viewBox="0 0 24 24">
@@ -2589,7 +2598,7 @@
             <!-- 唱片圈层 1: 外圈玻璃质感 -->
             <div class="absolute inset-1 rounded-full border border-pink-100/40"></div>
             <!-- 唱片圈层 2: 黑胶高光沟槽 -->
-            <div class="absolute inset-0 rounded-full vinyl-grooves"></div>
+            <div class="absolute top-0 left-0 w-full h-full rounded-full vinyl-grooves"></div>
             <!-- 唱片圈层 3: 内圈粉白渐变盘面 -->
             <div class="w-[92px] h-[92px] rounded-full border border-pink-200/50 bg-gradient-to-tr from-white/30 via-pink-50/20 to-white/40 flex items-center justify-center relative">
               <!-- 中心封面图 -->
@@ -2908,7 +2917,7 @@
                 <div class="relative w-[158px] h-[158px] flex items-center justify-center pointer-events-none scale-95 origin-center">
                   <div class="absolute left-0 bottom-0 w-[138px] h-[138px] rounded-full bg-white/40 backdrop-blur-xs border border-white/90 shadow-[0_6px_20px_rgba(0,0,0,0.08)] flex items-center justify-center relative spin-slow z-10">
                     <div class="absolute inset-1 rounded-full border border-pink-100/40"></div>
-                    <div class="absolute inset-0 rounded-full vinyl-grooves"></div>
+                    <div class="absolute top-0 left-0 w-full h-full rounded-full vinyl-grooves"></div>
                     <div class="w-[92px] h-[92px] rounded-full border border-pink-200/50 bg-gradient-to-tr from-white/30 via-pink-50/20 to-white/40 flex items-center justify-center relative">
                       <div class="w-[62px] h-[62px] rounded-full overflow-hidden border border-white/90 shadow-inner relative z-10">
                         <img src="https://i.ibb.co/ycJyfVC0/IMG-5506.jpg" class="w-full h-full object-cover" />
@@ -2944,7 +2953,7 @@
             <div class="flex flex-col items-center w-full gap-2">
               <div @click="addWidget('creamy_film_2x4', '粉色胶卷')" class="w-[148px] h-[260px] shrink-0 flex flex-col items-center justify-center p-0 box-border cursor-pointer active:scale-95 transition-all hover:opacity-90">
                 <div class="relative w-[148px] h-[260px] flex flex-col items-center justify-between py-2 px-1 pointer-events-none scale-100 origin-center">
-                  <div class="absolute inset-0 bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0 pointer-events-none"></div>
+                  <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#FFF0F3] to-[#FDEBEF] film-mask-holes z-0 pointer-events-none"></div>
                   <div class="w-full h-[18px] flex items-center justify-center gap-1 mt-0.5 z-20 px-2">
                     <span class="font-sweet text-[12px] text-[#E29CA9] font-bold tracking-tight leading-none px-1 max-w-[100px] truncate">Sweet memories</span>
                     <svg class="w-2.5 h-2.5 fill-[#E29CA9] shrink-0" viewBox="0 0 24 24">
@@ -2973,7 +2982,7 @@
                     <div class="relative w-full h-[126px] bg-[#312F35] rounded-[12px] p-2 flex items-center justify-center overflow-hidden border-2 border-[#E5C3CC]">
                       <div class="w-full h-full rounded-[6px] overflow-hidden bg-black/50 relative">
                         <img src="https://i.ibb.co/Rkp13sgv/IMG-5555.jpg" class="w-full h-full object-cover" />
-                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25"></div>
+                        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-transparent via-white/10 to-white/25"></div>
                       </div>
                     </div>
                     <div class="w-full flex-1 flex flex-col justify-between pt-2 pb-1 px-1 relative">
@@ -3081,7 +3090,7 @@
               <div @click="addWidget('music_player_4x2', '中等音乐播放器')" class="w-[335px] h-[158px] shrink-0 bg-white/20 rounded-[36px] border border-white/40 relative select-none box-border shadow-sm cursor-pointer active:scale-95 transition-all hover:opacity-90 font-sans">
                 
                 <!-- 散落小爱心装饰 -->
-                <div class="absolute inset-0 pointer-events-none text-gray-500/30 text-[10px]">
+                <div class="absolute top-0 left-0 w-full h-full pointer-events-none text-gray-500/30 text-[10px]">
                   <span class="absolute top-2 left-3">♡</span>
                   <span class="absolute top-5 right-2">♡</span>
                   <span class="absolute bottom-6 left-2">♡</span>
@@ -3177,7 +3186,7 @@
                 <!-- 左侧大圆形相框占位 -->
                 <div class="relative w-[140px] h-[140px] -ml-2 rounded-r-full rounded-l-[28px] overflow-hidden flex-shrink-0 border-2 border-white/40 bg-gray-300">
                   <img referrerpolicy="no-referrer" src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEYgxhqccE0y-VpR-ruQDAN56Xa6UJUugACYSMAAniTkFe91_e_B-6b6j0E.jpeg" alt="Left Main Image" class="w-full h-full object-cover" />
-                  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center pointer-events-none">
                     <div class="w-12 h-12 rounded-full border-2 border-white/80 flex items-center justify-center">
                       <div class="w-4 h-4 rounded-full bg-white/90"></div>
                     </div>
@@ -3358,7 +3367,7 @@
                 </div>
                 
                 <!-- Overlay to catch clicks -->
-                <div class="absolute inset-0 z-20 hover:bg-white/10 transition-colors pointer-events-none"></div>
+                <div class="absolute top-0 left-0 w-full h-full z-20 hover:bg-white/10 transition-colors pointer-events-none"></div>
               </div>
               <span class="text-[11px] font-serif text-gray-500">购物车</span>
             </div>
@@ -3451,7 +3460,7 @@
                 </div>
                 
                 <!-- Overlay to catch clicks -->
-                <div class="absolute inset-0 z-20 hover:bg-white/10 transition-colors pointer-events-none rounded-[36px]"></div>
+                <div class="absolute top-0 left-0 w-full h-full z-20 hover:bg-white/10 transition-colors pointer-events-none rounded-[36px]"></div>
               </div>
               <span class="text-[11px] font-serif text-gray-500">媒体播放器</span>
             </div>
@@ -3462,7 +3471,7 @@
                    class="w-[335px] h-[335px] max-w-full rounded-[36px] overflow-hidden relative shadow-2xl select-none flex flex-col justify-end box-border cursor-pointer active:scale-95 transition-all hover:opacity-90">
                 
                 <!-- 1. 全屏底层背景图 -->
-                <div class="absolute inset-0 z-0 pointer-events-none">
+                <div class="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
                   <img referrerpolicy="no-referrer" src="https://i.ibb.co/Q3Qmz00V/IMG-4515.jpg" alt="Background" class="w-full h-full object-cover" />
                 </div>
 
@@ -3485,7 +3494,7 @@
                 </div>
 
                 <!-- Overlay to catch clicks -->
-                <div class="absolute inset-0 z-20 hover:bg-white/10 transition-colors pointer-events-none"></div>
+                <div class="absolute top-0 left-0 w-full h-full z-20 hover:bg-white/10 transition-colors pointer-events-none"></div>
               </div>
               <span class="text-[11px] font-serif text-gray-500">个人资料</span>
             </div>
