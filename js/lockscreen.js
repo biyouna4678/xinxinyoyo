@@ -124,7 +124,7 @@ function lockScreenApp() {
             if (!config) return;
             const activeScheme = getActiveScheme(config);
             if (activeScheme) {
-                this.settings.wallpaper = activeScheme.lockscreen;
+                this.settings.wallpaper = activeScheme.desktop || activeScheme.lockscreen;
                 this.clockColor = activeScheme.textColor === 'black' ? '#000000' : '#FFFFFF';
                 
                 if (typeof getSchemeFilter === 'function') {

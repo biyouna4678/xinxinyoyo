@@ -102,13 +102,13 @@
   
   <style>
     html, body {
+      position: fixed;
+      inset: 0;
       margin: 0;
+      width: 100%;
+      height: 100%;
       background-color: #BCBCBC; /* desktop grey fallback */
       overflow: hidden;
-    }
-    body {
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
     }
     /* iOS Safari Fullscreen Safe bg */
     .fullscreen-bg {
@@ -154,7 +154,10 @@
         <div class="absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-300" :style="`background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,${settings.vignetteOpacity}) 100%);`"></div>
       </div>
     </template>
-    <div class="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none"></div>
+    <template x-if="!settings.wallpaper">
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#e8eaec] via-[#d5d7da] to-[#b5b8bc]"></div>
+    </template>
+    <div class="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none z-10"></div>
   </div>
 
   <!-- 2. 状态栏 -->
@@ -181,7 +184,7 @@
   </div>
 
   <!-- 锁屏主视图 -->
-  <div class="relative z-10 h-full flex flex-col justify-between pt-[max(3.5rem,calc(env(safe-area-inset-top,0px)+1.5rem))] pb-[max(1.25rem,calc(env(safe-area-inset-bottom,0px)+0.75rem))] px-5 transition-all duration-300 transform"
+  <div class="absolute inset-0 z-10 flex flex-col justify-between pt-[max(3.5rem,calc(env(safe-area-inset-top,0px)+1.5rem))] pb-[max(1.25rem,calc(env(safe-area-inset-bottom,0px)+0.75rem))] px-5 transition-all duration-300 transform"
        :class="[
          isUnlocking ? '-translate-y-20 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100',
          (showPinPad || showCustomizePanel || showDateOptions) ? 'blur-sm scale-95 opacity-80' : 'blur-0 scale-100'
@@ -835,7 +838,7 @@
   </div>
 
   <!-- 3. 桌面主布局 -->
-  <div class="relative z-10 h-full flex flex-col justify-between pt-[max(4.5rem,calc(env(safe-area-inset-top,20px)+2.5rem))] pb-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.5rem))] px-4 app-pop-in">
+  <div class="absolute inset-0 z-10 flex flex-col justify-between pt-[max(4.5rem,calc(env(safe-area-inset-top,20px)+2.5rem))] pb-[max(0.75rem,calc(env(safe-area-inset-bottom,0px)+0.5rem))] px-4 app-pop-in">
 
     <!-- 桌面可滚动内容区（统一网格：应用图标 + 小组件共存） -->
     <div class="w-full max-w-sm mx-auto overflow-hidden no-scrollbar pt-1"
